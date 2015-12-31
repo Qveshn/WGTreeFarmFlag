@@ -15,6 +15,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
+	public final static String version = "1.0.3";
 	private WorldGuardPlugin worldGuard;
 	private WGCustomFlagsPlugin wgCustomFlags;
 	
@@ -40,9 +41,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
-		for(String s:Strings.enableInfo){
-			logInfo(s);
-		}
+		logInfo(Strings.enableInfo);
 	}
 	@Override
 	public void onDisable(){
@@ -50,9 +49,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		HandlerList.unregisterAll(this);
 		
-		for(String s:Strings.disableInfo){
-			logInfo(s);
-		}
+		logInfo(Strings.disableInfo);
 	}
 	public void reload(){
 		onDisable();
@@ -63,7 +60,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		if(label.equalsIgnoreCase("wgtreefarmflag")){
 			if(args.length == 0){
 				for(String s:Strings.info){
-					sendMessage(sender, s.replace("%version%", Strings.version));
+					sendMessage(sender, s.replace("%version%", version));
 				}
 				return true;
 			}
@@ -100,6 +97,9 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	}
 	public void logInfo(String info){
 		getLogger().info(info);
+	}
+	public void logInfo(String[] info){
+		for(String s:info) getLogger().info(s);
 	}
 	public void logWarning(String warning){
 		getLogger().warning(warning);
