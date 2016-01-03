@@ -2,9 +2,12 @@ package net.src_dev.wgtreefarmflag;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,11 +18,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.5";
+	public final static String version = "1.1.6";
 	public final static int configVersion = 2;
 	
 	private WorldGuardPlugin worldGuard;
@@ -27,6 +31,9 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	
 	public static final StateFlag TREE_FARM = new StateFlag("tree-farm", false);
 	public static final StateFlag MUSHROOM_FARM = new StateFlag("mushroom-farm", false);
+	
+	public List<ProtectedRegion> treeFarms; //unused at the moment
+	public List<ProtectedRegion> mushroomFarms;
 	
 	@Override
 	public void onEnable(){
@@ -50,6 +57,20 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			saveNewConfig(configFile);
 		}
 		Strings.loadStrings(getConfig());
+		
+		logWarning(Strings.checkingAllRegions);
+		for(World w:getServer().getWorlds()){
+			for(Entry<String, ProtectedRegion> entry:getWorldGuard().getRegionManager(w).getRegions().entrySet()){
+				ProtectedRegion r = entry.getValue();
+				if(r.getFlag(WGTreeFarmFlag.TREE_FARM) == StateFlag.State.ALLOW){
+					treeFarms.add(r);
+				}
+				if(r.getFlag(WGTreeFarmFlag.MUSHROOM_FARM) == StateFlag.State.ALLOW){
+					mushroomFarms.add(r);
+				}
+			}
+		}
+		logWarning(Strings.doneCheckingRegions);
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		

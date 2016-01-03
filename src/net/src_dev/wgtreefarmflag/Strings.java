@@ -15,6 +15,8 @@ public class Strings {
 	public static String[] disableInfo = {
 		"[WGTreeFarmFlag] Disabled."
 	};
+	public final static String checkingAllRegions = "WGTreeFarmFlag -> Checking all regions for farm flags...";
+	public final static String doneCheckingRegions = "WGTreeFarmFlag -> Done checking regions.";
 	
 	public static List<String> info;
 	public static List<String> help;
