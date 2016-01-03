@@ -1,6 +1,12 @@
 allow-shears: true
 allow-saplingbreak-with-perm: false
 allow-mushroombreak-with-perm: false
+enable-sapling-interval-growth: false
+enable-mushroom-interval-growth: true
+sapling-growth-interval: 180
+mushroom-growth-interval: 180
+sapling-growth-chance: 25
+mushroom-growth-chance: 25
 strings:
   commandNonExistant: '&cThat command does not exist.'
   cannotBreakMushroom: '&8[&6Tree Farm&8] &cYou need to let the mushrooms grow!'

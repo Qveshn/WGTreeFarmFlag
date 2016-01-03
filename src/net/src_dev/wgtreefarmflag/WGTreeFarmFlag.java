@@ -3,12 +3,15 @@ package net.src_dev.wgtreefarmflag;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +27,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.12";
+	public final static String version = "1.1.15";
 	public final static int configVersion = 2;
 	
 	private WorldGuardPlugin worldGuard;
@@ -33,8 +36,11 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public static final StateFlag TREE_FARM = new StateFlag("tree-farm", false);
 	public static final StateFlag MUSHROOM_FARM = new StateFlag("mushroom-farm", false);
 	
-	public List<ProtectedRegion> treeFarms; //unused at the moment
-	public List<ProtectedRegion> mushroomFarms;
+	public HashMap<World, ProtectedRegion> treeFarms; //unused at the moment
+	public HashMap<World, ProtectedRegion> mushroomFarms;
+	
+	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment
+	public HashMap<ProtectedRegion, List<Block>> farmMushrooms;
 	
 	@Override
 	public void onEnable(){
@@ -59,21 +65,95 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		}
 		Strings.loadStrings(getConfig());
 		
-		treeFarms = new ArrayList<ProtectedRegion>();
-		mushroomFarms = new ArrayList<ProtectedRegion>();
 		logWarning(Strings.checkingAllRegions);
+		treeFarms = new HashMap<World, ProtectedRegion>();
+		mushroomFarms = new HashMap<World, ProtectedRegion>();
 		for(World w:getServer().getWorlds()){
 			for(Entry<String, ProtectedRegion> entry:getWorldGuard().getRegionManager(w).getRegions().entrySet()){
 				ProtectedRegion r = entry.getValue();
 				if(r.getFlag(WGTreeFarmFlag.TREE_FARM) == StateFlag.State.ALLOW){
-					treeFarms.add(r);
+					treeFarms.put(w, r);
 				}
 				if(r.getFlag(WGTreeFarmFlag.MUSHROOM_FARM) == StateFlag.State.ALLOW){
-					mushroomFarms.add(r);
+					mushroomFarms.put(w, r);
 				}
 			}
 		}
+		farmSaplings = new HashMap<ProtectedRegion, List<Block>>();
+		farmMushrooms = new HashMap<ProtectedRegion, List<Block>>();
+		for(Entry<World, ProtectedRegion> entry:treeFarms.entrySet()){
+			World w = entry.getKey();
+			ProtectedRegion r = entry.getValue();
+			List<Integer> coords;
+			List<Block> blocks;
+			List<Block> saplings;
+			Block block;
+			coords = new ArrayList<Integer>();
+			coords.add(r.getMinimumPoint().getBlockX());
+			coords.add(r.getMinimumPoint().getBlockY());
+			coords.add(r.getMinimumPoint().getBlockZ());
+			coords.add(r.getMaximumPoint().getBlockX());
+			coords.add(r.getMaximumPoint().getBlockY());
+			coords.add(r.getMaximumPoint().getBlockZ());
+			blocks = new ArrayList<Block>();
+			for (int x = Math.min(coords.get(0), coords.get(3)); x <= Math.max(coords.get(0), coords.get(3)); x++) {
+	            for (int y = Math.min(coords.get(1), coords.get(4)); y <= Math.max(coords.get(1), coords.get(4)); y++) {
+	                for (int z = Math.min(coords.get(2), coords.get(5)); z <= Math.max(coords.get(2), coords.get(5)); z++) {
+	                    block = w.getBlockAt(x, y, z);
+	                    blocks.add(block);
+	                }
+	            }
+	        }
+			saplings = new ArrayList<Block>();
+			for(Block b:blocks){
+				if(b.getType() == Material.SAPLING){
+					saplings.add(b);
+				}
+			}
+			farmSaplings.put(r, saplings);
+		}
+		for(Entry<World, ProtectedRegion> entry:mushroomFarms.entrySet()){
+			World w = entry.getKey();
+			ProtectedRegion r = entry.getValue();
+			List<Integer> coords;
+			List<Block> blocks;
+			List<Block> mushrooms;
+			Block block;
+			coords = new ArrayList<Integer>();
+			coords.add(r.getMinimumPoint().getBlockX());
+			coords.add(r.getMinimumPoint().getBlockY());
+			coords.add(r.getMinimumPoint().getBlockZ());
+			coords.add(r.getMaximumPoint().getBlockX());
+			coords.add(r.getMaximumPoint().getBlockY());
+			coords.add(r.getMaximumPoint().getBlockZ());
+			blocks = new ArrayList<Block>();
+			for (int x = Math.min(coords.get(0), coords.get(3)); x <= Math.max(coords.get(0), coords.get(3)); x++) {
+	            for (int y = Math.min(coords.get(1), coords.get(4)); y <= Math.max(coords.get(1), coords.get(4)); y++) {
+	                for (int z = Math.min(coords.get(2), coords.get(5)); z <= Math.max(coords.get(2), coords.get(5)); z++) {
+	                    block = w.getBlockAt(x, y, z);
+	                    blocks.add(block);
+	                }
+	            }
+	        }
+			mushrooms = new ArrayList<Block>();
+			for(Block b:blocks){
+				if(b.getType() == Material.RED_MUSHROOM || b.getType() == Material.BROWN_MUSHROOM){
+					mushrooms.add(b);
+				}
+			}
+			farmMushrooms.put(r, mushrooms);
+		}
 		logWarning(Strings.doneCheckingRegions);
+		
+		@SuppressWarnings("unused")
+		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance"); //unused at the moment
+		int mushroomGrowthChance = getConfig().getInt("mushroom-growth-chance");
+		@SuppressWarnings("unused")
+		int saplingGrowthInterval = getConfig().getInt("sapling-growth-interval") * 20; //unused at the moment
+		int mushroomGrowthInterval = getConfig().getInt("mushroom-growth-interval") * 20;
+		
+		if(getConfig().getBoolean("enable-sapling-interval-growth")) ;//unused at the moment
+		if(getConfig().getBoolean("enable-mushroom-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new MushroomIntervalGrower(this, mushroomGrowthChance), mushroomGrowthInterval, mushroomGrowthInterval);
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
@@ -82,6 +162,8 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	@Override
 	public void onDisable(){
 		reloadConfig();
+		
+		getServer().getScheduler().cancelTasks(this);
 		
 		HandlerList.unregisterAll(this);
 		
