@@ -1,15 +1,18 @@
 allow-shears: true
 allow-saplingbreak-with-perm: false
+allow-mushroombreak-with-perm: false
 strings:
   commandNonExistant: '&cThat command does not exist.'
-  cannotBreakSapling: '&6[TreeFarm] &cYou need to let the saplings grow!'
+  cannotBreakMushroom: '&8[&6Tree Farm&8] &cYou need to let the mushrooms grow!'
+  cannotBreakSapling: '&8[&6Tree Farm&8] &cYou need to let the saplings grow!'
   help:
   - '&6[WGTreeFarmFlag] &7Commands:'
   - '&cUsage: /wgtreefarmflag <command>'
   - '&chelp  &7View a list of all WGTreeFarmFlag commands.'
   - '&creload  &7Reload the plugin.'
   info:
-  - '&6[WGTreeFarmFlag] &7Version: %version%'
-  - '&6[WGTreeFarmFlag] &7By S_Ryan.'
+  - '&6[WGTreeFarmFlag] &7Version %version%'
+  - '&6[WGTreeFarmFlag] &7By S_Ryan'
   noPermission: '&cYou do not have permission for that command.'
   reloaded: '&6[WGTreeFarmFlag] &7Successfully reloaded.'
+config-version: 2

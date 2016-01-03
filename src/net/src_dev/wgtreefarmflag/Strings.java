@@ -22,6 +22,7 @@ public class Strings {
 	public static String noPermission;
 	public static String reloaded;
 	public static String cannotBreakSapling;
+	public static String cannotBreakMushroom;
 	
 	public static void loadStrings(FileConfiguration config){
 		info = config.getStringList("strings.info");
@@ -30,5 +31,6 @@ public class Strings {
 		noPermission = config.getString("strings.noPermission");
 		reloaded = config.getString("strings.reloaded");
 		cannotBreakSapling = config.getString("strings.cannotBreakSapling");
+		cannotBreakMushroom = config.getString("strings.cannotBreakMushroom");
 	}
 }

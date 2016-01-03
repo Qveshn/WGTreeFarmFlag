@@ -1,5 +1,9 @@
 package net.src_dev.wgtreefarmflag;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,11 +19,14 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.0.3";
+	public final static String version = "1.1.5";
+	public final static int configVersion = 2;
+	
 	private WorldGuardPlugin worldGuard;
 	private WGCustomFlagsPlugin wgCustomFlags;
 	
 	public static final StateFlag TREE_FARM = new StateFlag("tree-farm", false);
+	public static final StateFlag MUSHROOM_FARM = new StateFlag("mushroom-farm", false);
 	
 	@Override
 	public void onEnable(){
@@ -35,8 +42,13 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		}
 		
 		wgCustomFlags.addCustomFlag(TREE_FARM);
+		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
 		
 		saveDefaultConfig();
+		File configFile = new File(getDataFolder() + "config.yml");
+		if(!(getConfig().getInt("config-version") == configVersion)){
+			saveNewConfig(configFile);
+		}
 		Strings.loadStrings(getConfig());
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
@@ -87,6 +99,18 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			return true;
 		}
 		return false;
+	}
+	
+	public void saveNewConfig(File currentConfig){
+		File oldConfig = new File(getDataFolder() + "config.yml.old");
+		if(oldConfig.exists()){
+			oldConfig.delete();
+		}
+		try{
+			FileUtils.copyFile(currentConfig, oldConfig);
+		}catch(IOException e){}
+		currentConfig.delete();
+		saveDefaultConfig();
 	}
 	
 	public void sendMessage(CommandSender sender, String msg){

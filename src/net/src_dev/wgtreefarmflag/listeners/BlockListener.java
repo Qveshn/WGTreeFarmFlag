@@ -15,6 +15,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+
 import net.src_dev.wgtreefarmflag.Strings;
 import net.src_dev.wgtreefarmflag.WGTreeFarmFlag;
 
@@ -36,7 +38,8 @@ public class BlockListener implements Listener{
 		short dur;
 		byte data;
 		Block blUnder;
-		if(plugin.getWorldGuard().getRegionManager(w).getApplicableRegions(loc).testState(null, WGTreeFarmFlag.TREE_FARM)){
+		ApplicableRegionSet regionSet = plugin.getWorldGuard().getRegionManager(w).getApplicableRegions(loc);
+		if(regionSet.testState(null, WGTreeFarmFlag.TREE_FARM)){
 			itemInHand = p.getItemInHand();
 			if(mat == Material.LOG || mat == Material.LOG_2){
 				data = bl.getData();
@@ -78,6 +81,52 @@ public class BlockListener implements Listener{
 			}
 			else return;
 			e.setCancelled(true);
+			return;
+		}
+		if(regionSet.testState(null, WGTreeFarmFlag.MUSHROOM_FARM)){
+			itemInHand = p.getItemInHand();
+			boolean isMushroom = false;
+			Material mushroomType = null;
+			if(mat == Material.HUGE_MUSHROOM_2){
+				isMushroom = true;
+				mushroomType = Material.HUGE_MUSHROOM_2;
+			}
+			else if(mat == Material.HUGE_MUSHROOM_1){
+				isMushroom = true;
+				mushroomType = Material.HUGE_MUSHROOM_1;
+			}
+			if(isMushroom){
+				blUnder = bl.getRelative(BlockFace.DOWN);
+				if((!(p instanceof NPC)) && (p.getGameMode() != GameMode.CREATIVE)){
+					if(itemInHand == null) bl.breakNaturally();
+					else{
+						bl.breakNaturally(itemInHand);
+						dur = itemInHand.getDurability();
+						if(dur > 0){
+							dur++;
+							itemInHand.setDurability(dur);
+						}
+					}
+				}
+				else{
+					bl.setType(Material.AIR);
+				}
+				if(blUnder.getType() == Material.DIRT){
+					if(mushroomType == Material.HUGE_MUSHROOM_1){
+						bl.setType(Material.BROWN_MUSHROOM);
+					}
+					else if(mushroomType == Material.HUGE_MUSHROOM_2){
+						bl.setType(Material.RED_MUSHROOM);
+					}
+				}
+			}
+			else if(mat == Material.RED_MUSHROOM || mat == Material.BROWN_MUSHROOM){
+				if(p.hasPermission("wgtreefarmflag.mushroombreak") && plugin.getConfig().getBoolean("allow-mushroombreak-with-perm")) return;
+				plugin.sendMessage(p, Strings.cannotBreakMushroom);
+			}
+			else return;
+			e.setCancelled(true);
+			return;
 		}
 	}
 	
