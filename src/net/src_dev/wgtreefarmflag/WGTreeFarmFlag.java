@@ -2,6 +2,7 @@ package net.src_dev.wgtreefarmflag;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -23,7 +24,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.6";
+	public final static String version = "1.1.12";
 	public final static int configVersion = 2;
 	
 	private WorldGuardPlugin worldGuard;
@@ -58,6 +59,8 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		}
 		Strings.loadStrings(getConfig());
 		
+		treeFarms = new ArrayList<ProtectedRegion>();
+		mushroomFarms = new ArrayList<ProtectedRegion>();
 		logWarning(Strings.checkingAllRegions);
 		for(World w:getServer().getWorlds()){
 			for(Entry<String, ProtectedRegion> entry:getWorldGuard().getRegionManager(w).getRegions().entrySet()){
