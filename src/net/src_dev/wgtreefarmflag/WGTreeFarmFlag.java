@@ -27,8 +27,10 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.15";
+	public final static String version = "1.1.16";
 	public final static int configVersion = 2;
+	
+	private boolean debug;
 	
 	private WorldGuardPlugin worldGuard;
 	private WGCustomFlagsPlugin wgCustomFlags;
@@ -42,8 +44,12 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment
 	public HashMap<ProtectedRegion, List<Block>> farmMushrooms;
 	
+	
 	@Override
-	public void onEnable(){
+	public void onEnable(){	
+		saveDefaultConfig();
+		debug = getConfig().getBoolean("debug");
+		
 		worldGuard = getWorldGuardPlugin();
 		if(worldGuard == null){
 			logWarning(Strings.noWorldGuard);
@@ -57,8 +63,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		wgCustomFlags.addCustomFlag(TREE_FARM);
 		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
-		
-		saveDefaultConfig();
+	
 		File configFile = new File(getDataFolder() + "config.yml");
 		if(!(getConfig().getInt("config-version") == configVersion)){
 			saveNewConfig(configFile);
@@ -233,6 +238,9 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	}
 	public void logWarning(String warning){
 		getLogger().warning(warning);
+	}
+	public void logDebug(String debugInfo){
+		if(debug) sendMessage(getServer().getConsoleSender(), ChatColor.translateAlternateColorCodes('&', Strings.debugHeader + debugInfo));
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){
