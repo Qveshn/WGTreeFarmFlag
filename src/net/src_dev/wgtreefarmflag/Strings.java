@@ -18,6 +18,7 @@ public class Strings {
 	public final static String checkingAllRegions = "[WGTreeFarmFlag] Gathering farm regions and information..";
 	public final static String doneCheckingRegions = "[WGTreeFarmFlag] Done checking regions.";
 	public final static String debugHeader = "&6WGTreeFarmFlag&r->&cdebug&6> &r";
+	public final static String invalidDebugLevel = "[WGTreeFarmFlag] Invalid debug level (must be 1-4). Using default.";
 	
 	public static List<String> info;
 	public static List<String> help;

@@ -27,10 +27,12 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.16";
+	public final static String version = "1.1.18";
 	public final static int configVersion = 2;
 	
 	private boolean debug;
+	private int debugLevel;
+	private int defaultDebugLevel = 2;
 	
 	private WorldGuardPlugin worldGuard;
 	private WGCustomFlagsPlugin wgCustomFlags;
@@ -49,6 +51,11 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public void onEnable(){	
 		saveDefaultConfig();
 		debug = getConfig().getBoolean("debug");
+		debugLevel = getConfig().getInt("debug-level");
+		if(debugLevel < 1 || debugLevel > 4){
+			logWarning(Strings.invalidDebugLevel);
+			debugLevel = defaultDebugLevel;
+		}
 		
 		worldGuard = getWorldGuardPlugin();
 		if(worldGuard == null){
@@ -239,8 +246,8 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public void logWarning(String warning){
 		getLogger().warning(warning);
 	}
-	public void logDebug(String debugInfo){
-		if(debug) sendMessage(getServer().getConsoleSender(), ChatColor.translateAlternateColorCodes('&', Strings.debugHeader + debugInfo));
+	public void logDebug(String debugInfo, int level){
+		if(debug && level <= debugLevel) sendMessage(getServer().getConsoleSender(), ChatColor.translateAlternateColorCodes('&', Strings.debugHeader + debugInfo));
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){

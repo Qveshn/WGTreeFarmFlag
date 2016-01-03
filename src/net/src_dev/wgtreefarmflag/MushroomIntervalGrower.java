@@ -22,9 +22,11 @@ public class MushroomIntervalGrower implements Runnable{
 	
 	@Override
 	public void run(){
-		plugin.logDebug("Running mushroom grower task.");
+		plugin.logDebug("Running mushroom grower task.", 1);
 		Random random = new Random();
+		plugin.logDebug("Starting iteration of Entry<ProtectedRegion, List<Block>>.", 4);
 		for(Entry<ProtectedRegion, List<Block>> entry:plugin.farmMushrooms.entrySet()){
+			plugin.logDebug("Starting iteration of List<Block>.", 4);
 			for(Block b:entry.getValue()){
 				Location loc = b.getLocation();
 				Material type = b.getType();
@@ -36,6 +38,6 @@ public class MushroomIntervalGrower implements Runnable{
 				if(r <= growthChance) w.generateTree(loc, treeType);				
 			}
 		}
-		plugin.logDebug("Mushroom grower task completed.");
+		plugin.logDebug("Mushroom grower task completed.", 2);
 	}
 }

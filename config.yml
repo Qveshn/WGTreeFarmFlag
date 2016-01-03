@@ -22,4 +22,5 @@ strings:
   noPermission: '&cYou do not have permission for that command.'
   reloaded: '&6[WGTreeFarmFlag] &7Successfully reloaded.'
 debug: false
+debug-level: 2
 config-version: 2
