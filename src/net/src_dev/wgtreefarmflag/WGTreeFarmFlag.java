@@ -27,7 +27,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.23";
+	public final static String version = "1.1.27";
 	public final static int configVersion = 2;
 	
 	private boolean debug;
@@ -40,7 +40,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public static final StateFlag TREE_FARM = new StateFlag("tree-farm", false);
 	public static final StateFlag MUSHROOM_FARM = new StateFlag("mushroom-farm", false);
 	
-	public HashMap<World, ProtectedRegion> treeFarms; //unused at the moment
+	public HashMap<World, ProtectedRegion> treeFarms; 
 	public HashMap<World, ProtectedRegion> mushroomFarms;
 	
 	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment

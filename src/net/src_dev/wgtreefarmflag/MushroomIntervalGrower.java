@@ -39,8 +39,13 @@ public class MushroomIntervalGrower implements Runnable{
 				boolean grew;
 				if(r <= growthChance){
 					plugin.logDebug("Trying to grow tree..", 4);
+					b.setType(Material.AIR);
 					grew = w.generateTree(loc, treeType);	
-					if(!grew) plugin.logDebug("Tree growth failed. Unknown cause.", 4);
+					if(!grew){
+						plugin.logDebug("Mushroom growth failed.", 4);
+						b.setType(type);
+					}
+					
 				}
 			}
 		}
