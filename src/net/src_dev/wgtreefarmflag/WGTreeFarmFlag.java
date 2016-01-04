@@ -164,14 +164,12 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		}
 		logWarning(Strings.doneCheckingRegions);
 		
-		@SuppressWarnings("unused")
-		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance"); //unused at the moment
+		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance");
 		int mushroomGrowthChance = getConfig().getInt("mushroom-growth-chance");
-		@SuppressWarnings("unused")
-		int saplingGrowthInterval = getConfig().getInt("sapling-growth-interval") * 20; //unused at the moment
+		int saplingGrowthInterval = getConfig().getInt("sapling-growth-interval") * 20;
 		int mushroomGrowthInterval = getConfig().getInt("mushroom-growth-interval") * 20;
 		
-		if(getConfig().getBoolean("enable-sapling-interval-growth")) ;//unused at the moment
+		if(getConfig().getBoolean("enable-sapling-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaplingIntervalGrower(this, saplingGrowthChance), saplingGrowthInterval, saplingGrowthInterval);
 		if(getConfig().getBoolean("enable-mushroom-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new MushroomIntervalGrower(this, mushroomGrowthChance), mushroomGrowthInterval, mushroomGrowthInterval);
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
