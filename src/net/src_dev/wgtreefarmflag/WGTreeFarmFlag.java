@@ -27,7 +27,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.27";
+	public final static String version = "1.1.28";
 	public final static int configVersion = 2;
 	
 	private boolean debug;
@@ -46,15 +46,11 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment
 	public HashMap<ProtectedRegion, List<Block>> farmMushrooms;
 	
-	
 	@Override
 	public void onEnable(){	
 		saveDefaultConfig();
 		debug = getConfig().getBoolean("debug");
 		debugLevel = getConfig().getInt("debug-level");
-		
-		logDebug("Starting onEnable.", 2);
-		
 		if(debugLevel < 1 || debugLevel > 4){
 			logWarning(Strings.invalidDebugLevel);
 			debugLevel = defaultDebugLevel;

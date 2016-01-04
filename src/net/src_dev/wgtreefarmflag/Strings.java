@@ -17,7 +17,6 @@ public class Strings {
 	};
 	public final static String checkingAllRegions = "[WGTreeFarmFlag] Gathering farm regions and information..";
 	public final static String doneCheckingRegions = "[WGTreeFarmFlag] Done checking regions.";
-	public final static String debugHeader = "WGTreeFarmFlag->debug> ";
 	public final static String invalidDebugLevel = "[WGTreeFarmFlag] Invalid debug level (must be 1-4). Using default.";
 	
 	public static List<String> info;
@@ -27,6 +26,7 @@ public class Strings {
 	public static String reloaded;
 	public static String cannotBreakSapling;
 	public static String cannotBreakMushroom;
+	public static String debugHeader;
 	
 	public static void loadStrings(FileConfiguration config){
 		info = config.getStringList("strings.info");
@@ -36,5 +36,6 @@ public class Strings {
 		reloaded = config.getString("strings.reloaded");
 		cannotBreakSapling = config.getString("strings.cannotBreakSapling");
 		cannotBreakMushroom = config.getString("strings.cannotBreakMushroom");
+		debugHeader = config.getString("debug-header");
 	}
 }
