@@ -80,16 +80,12 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		treeFarms = new HashMap<World, ProtectedRegion>();
 		mushroomFarms = new HashMap<World, ProtectedRegion>();
 		for(World w:getServer().getWorlds()){
-			logDebug("Checking regions within world " + w.getName() + ".", 3);
 			for(Entry<String, ProtectedRegion> entry:getWorldGuard().getRegionManager(w).getRegions().entrySet()){
 				ProtectedRegion r = entry.getValue();
-				logDebug("Checking region " + r.getId() + " for farm flags.", 4);
 				if(r.getFlag(WGTreeFarmFlag.TREE_FARM) == StateFlag.State.ALLOW){
-					logDebug("Adding region " + r.getId() + " to tree farm list.", 3);
 					treeFarms.put(w, r);
 				}
 				if(r.getFlag(WGTreeFarmFlag.MUSHROOM_FARM) == StateFlag.State.ALLOW){
-					logDebug("Adding region " + r.getId() + " to mushroom farm list.", 3);
 					mushroomFarms.put(w, r);
 				}
 			}
@@ -248,7 +244,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		getLogger().warning(warning);
 	}
 	public void logDebug(String debugInfo, int level){
-		if(debug && level <= debugLevel) logWarning(Strings.debugHeader + debugInfo);
+		if(debug && level <= debugLevel) sendMessage(getServer().getConsoleSender(), Strings.debugHeader + debugInfo);
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){

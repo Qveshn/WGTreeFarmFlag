@@ -23,5 +23,5 @@ strings:
   reloaded: '&6[WGTreeFarmFlag] &7Successfully reloaded.'
 debug: false
 debug-level: 2
-debug-header: WGTreeFarmFlag->debug>
+debug-header: '&6WGTreeFarmFlag->&cdebug&6> &r'
 config-version: 2
