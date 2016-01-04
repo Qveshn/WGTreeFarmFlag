@@ -24,4 +24,3 @@ strings:
 debug: false
 debug-level: 2
 debug-header: '&6WGTreeFarmFlag->&cdebug&6> &r'
-config-version: 2

@@ -1,5 +1,6 @@
 package net.src_dev.wgtreefarmflag;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -13,17 +14,20 @@ import org.bukkit.block.Block;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class MushroomIntervalGrower implements Runnable{
+	@SuppressWarnings("unused")
 	private WGTreeFarmFlag plugin;
 	private int growthChance;
-	public MushroomIntervalGrower(WGTreeFarmFlag plugin, int growthChance){
+	private HashMap<ProtectedRegion, List<Block>> farmMushrooms;
+	public MushroomIntervalGrower(WGTreeFarmFlag plugin, int growthChance, HashMap<ProtectedRegion, List<Block>> farmMushrooms){
 		this.plugin = plugin;
 		this.growthChance = growthChance;
+		this.farmMushrooms = farmMushrooms;
 	}
 	
 	@Override
 	public void run(){
 		Random random = new Random();
-		for(Entry<ProtectedRegion, List<Block>> entry:plugin.farmMushrooms.entrySet()){
+		for(Entry<ProtectedRegion, List<Block>> entry:farmMushrooms.entrySet()){
 			for(Block b:entry.getValue()){
 				Location loc = b.getLocation();
 				World w = loc.getWorld();
