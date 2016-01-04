@@ -29,23 +29,25 @@ public class MushroomIntervalGrower implements Runnable{
 			plugin.logDebug("Starting iteration of List<Block>.", 4);
 			for(Block b:entry.getValue()){
 				Location loc = b.getLocation();
-				Material type = b.getType();
 				World w = loc.getWorld();
-				TreeType treeType = null;
-				if(type == Material.BROWN_MUSHROOM) treeType = TreeType.BROWN_MUSHROOM;
-				else if(type == Material.RED_MUSHROOM) treeType = TreeType.RED_MUSHROOM;
-				int r = random.nextInt(99) + 1;
-				plugin.logDebug("Determining whether to grow tree. The chance is " + growthChance + "%, and the random is " + r + ".", 4);
-				boolean grew;
-				if(r <= growthChance){
-					plugin.logDebug("Trying to grow tree..", 4);
-					b.setType(Material.AIR);
-					grew = w.generateTree(loc, treeType);	
-					if(!grew){
-						plugin.logDebug("Mushroom growth failed.", 4);
-						b.setType(type);
+				if(w.getBlockAt(loc).getType() == Material.RED_MUSHROOM || w.getBlockAt(loc).getType() == Material.BROWN_MUSHROOM){
+					Material type = b.getType();
+					TreeType treeType = null;
+					if(type == Material.BROWN_MUSHROOM) treeType = TreeType.BROWN_MUSHROOM;
+					else if(type == Material.RED_MUSHROOM) treeType = TreeType.RED_MUSHROOM;
+					int r = random.nextInt(99) + 1;
+					plugin.logDebug("Determining whether to grow tree. The chance is " + growthChance + "%, and the random is " + r + ".", 4);
+					boolean grew;
+					if(r <= growthChance){
+						plugin.logDebug("Trying to grow tree..", 4);
+						b.setType(Material.AIR);
+						grew = w.generateTree(loc, treeType);	
+						if(!grew){
+							plugin.logDebug("Mushroom growth failed.", 4);
+							b.setType(type);
+						}
+						
 					}
-					
 				}
 			}
 		}
