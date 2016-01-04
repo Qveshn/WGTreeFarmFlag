@@ -27,7 +27,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.29";
+	public final static String version = "1.1.30";
 	public final static int configVersion = 2;
 	
 	private boolean debug;
