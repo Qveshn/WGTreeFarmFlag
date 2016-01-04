@@ -24,7 +24,7 @@ import net.src_dev.srclibrary.RegionFunctions;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.31";
+	public final static String version = "1.1.32";
 	
 	private boolean debug;
 	private int debugLevel;
@@ -42,6 +42,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment
 	public HashMap<ProtectedRegion, List<Block>> farmMushrooms;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onEnable(){	
 		saveDefaultConfig();
@@ -91,8 +92,16 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
 			saplings = new ArrayList<Block>();
 			for(Block b:blocks){
-				if(b.getType() == Material.SAPLING){
-					saplings.add(b);
+				Material bType = b.getType();
+				if(bType == Material.SAPLING || bType == Material.LOG_2 || bType == Material.LOG){
+					Block blockToAdd = b;
+					if(blockToAdd.getType() != Material.SAPLING){
+						blockToAdd.setType(Material.SAPLING);
+						byte data = b.getData();
+						if(b.getType() == Material.LOG_2) data += 4;
+						blockToAdd.setData(data);
+					}
+					saplings.add(blockToAdd);
 				}
 			}
 			farmSaplings.put(r, saplings);
@@ -104,8 +113,12 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
 			mushrooms = new ArrayList<Block>();
 			for(Block b:blocks){
-				if(b.getType() == Material.RED_MUSHROOM || b.getType() == Material.BROWN_MUSHROOM){
-					mushrooms.add(b);
+				Material bType = b.getType();
+				if(bType == Material.RED_MUSHROOM || bType == Material.BROWN_MUSHROOM || bType == Material.HUGE_MUSHROOM_1 || bType == Material.HUGE_MUSHROOM_2){
+					Block blockToAdd = b;
+					if(blockToAdd.getType() == Material.HUGE_MUSHROOM_1) blockToAdd.setType(Material.BROWN_MUSHROOM);
+					else if(blockToAdd.getType() == Material.HUGE_MUSHROOM_2) blockToAdd.setType(Material.HUGE_MUSHROOM_2);
+					mushrooms.add(blockToAdd);
 				}
 			}
 			farmMushrooms.put(r, mushrooms);
