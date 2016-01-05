@@ -39,10 +39,6 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public HashMap<World, ProtectedRegion> treeFarms; 
 	public HashMap<World, ProtectedRegion> mushroomFarms;
 	
-	public HashMap<ProtectedRegion, List<Block>> farmSaplings; //unused at the moment
-	public HashMap<ProtectedRegion, List<Block>> farmMushrooms;
-	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onEnable(){	
 		saveDefaultConfig();
@@ -83,46 +79,6 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 				}
 			}
 		}
-		farmSaplings = new HashMap<ProtectedRegion, List<Block>>();
-		farmMushrooms = new HashMap<ProtectedRegion, List<Block>>();
-		for(Entry<World, ProtectedRegion> entry:treeFarms.entrySet()){
-			World w = entry.getKey();
-			ProtectedRegion r = entry.getValue();
-			List<Block> saplings;
-			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
-			saplings = new ArrayList<Block>();
-			for(Block b:blocks){
-				Material bType = b.getType();
-				if(bType == Material.SAPLING || bType == Material.LOG_2 || bType == Material.LOG){
-					Block blockToAdd = b;
-					if(blockToAdd.getType() != Material.SAPLING){
-						blockToAdd.setType(Material.SAPLING);
-						byte data = b.getData();
-						if(b.getType() == Material.LOG_2) data += 4;
-						blockToAdd.setData(data);
-					}
-					saplings.add(blockToAdd);
-				}
-			}
-			farmSaplings.put(r, saplings);
-		}
-		for(Entry<World, ProtectedRegion> entry:mushroomFarms.entrySet()){
-			World w = entry.getKey();
-			ProtectedRegion r = entry.getValue();
-			List<Block> mushrooms;
-			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
-			mushrooms = new ArrayList<Block>();
-			for(Block b:blocks){
-				Material bType = b.getType();
-				if(bType == Material.RED_MUSHROOM || bType == Material.BROWN_MUSHROOM || bType == Material.HUGE_MUSHROOM_1 || bType == Material.HUGE_MUSHROOM_2){
-					Block blockToAdd = b;
-					if(blockToAdd.getType() == Material.HUGE_MUSHROOM_1) blockToAdd.setType(Material.BROWN_MUSHROOM);
-					else if(blockToAdd.getType() == Material.HUGE_MUSHROOM_2) blockToAdd.setType(Material.HUGE_MUSHROOM_2);
-					mushrooms.add(blockToAdd);
-				}
-			}
-			farmMushrooms.put(r, mushrooms);
-		}
 		logWarning(Strings.doneCheckingRegions);
 		
 		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance");
@@ -130,8 +86,8 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		int saplingGrowthInterval = getConfig().getInt("sapling-growth-interval") * 20;
 		int mushroomGrowthInterval = getConfig().getInt("mushroom-growth-interval") * 20;
 		
-		if(getConfig().getBoolean("enable-sapling-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaplingIntervalGrower(this, saplingGrowthChance, farmSaplings), saplingGrowthInterval, saplingGrowthInterval);
-		if(getConfig().getBoolean("enable-mushroom-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new MushroomIntervalGrower(this, mushroomGrowthChance, farmMushrooms), mushroomGrowthInterval, mushroomGrowthInterval);
+		if(getConfig().getBoolean("enable-sapling-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaplingIntervalGrower(this, saplingGrowthChance), saplingGrowthInterval, saplingGrowthInterval);
+		if(getConfig().getBoolean("enable-mushroom-interval-growth")) getServer().getScheduler().scheduleSyncRepeatingTask(this, new MushroomIntervalGrower(this, mushroomGrowthChance), mushroomGrowthInterval, mushroomGrowthInterval);
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
@@ -208,5 +164,39 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			return null;
 		}
 		return (WGCustomFlagsPlugin) plugin;
+	}
+	public HashMap<ProtectedRegion, List<Block>> getFarmSaplings(){
+		HashMap<ProtectedRegion, List<Block>> farmSaplings = new HashMap<ProtectedRegion, List<Block>>();
+		for(Entry<World, ProtectedRegion> entry:treeFarms.entrySet()){
+			World w = entry.getKey();
+			ProtectedRegion r = entry.getValue();
+			List<Block> saplings;
+			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
+			saplings = new ArrayList<Block>();
+			for(Block b:blocks){
+				if(b.getType() == Material.SAPLING){
+					saplings.add(b);
+				}
+			}
+			farmSaplings.put(r, saplings);
+		}
+		return farmSaplings;
+	}
+	public HashMap<ProtectedRegion, List<Block>> getFarmMushrooms(){
+		HashMap<ProtectedRegion, List<Block>> farmMushrooms = new HashMap<ProtectedRegion, List<Block>>();
+		for(Entry<World, ProtectedRegion> entry:mushroomFarms.entrySet()){
+			World w = entry.getKey();
+			ProtectedRegion r = entry.getValue();
+			List<Block> mushrooms;
+			List<Block> blocks = RegionFunctions.getBlocksInRegion(w, r);
+			mushrooms = new ArrayList<Block>();
+			for(Block b:blocks){
+				if(b.getType() == Material.RED_MUSHROOM || b.getType() == Material.BROWN_MUSHROOM){
+					mushrooms.add(b);
+				}
+			}
+			farmMushrooms.put(r, mushrooms);
+		}
+		return farmMushrooms;
 	}
 }
