@@ -37,5 +37,10 @@ public abstract class JavaPlugin extends org.bukkit.plugin.java.JavaPlugin{
 				console.sendMessage(ChatColor.translateAlternateColorCodes(ChatFunctions.getAlternateColorCodeChar(), m));
 			}
 		}
+		else{
+			for(String m:messages){
+				console.sendMessage(m);
+			}
+		}
 	}
 }

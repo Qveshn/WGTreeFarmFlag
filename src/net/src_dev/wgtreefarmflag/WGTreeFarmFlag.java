@@ -24,7 +24,7 @@ import net.src_dev.srclibrary.RegionFunctions;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.32";
+	public final static String version = "1.1.33";
 	
 	private boolean debug;
 	private int debugLevel;
