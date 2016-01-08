@@ -17,8 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 
-import net.src_dev.srclibrary.ChatFunctions;
-import net.src_dev.wgtreefarmflag.Strings;
+import net.src_dev.wgtreefarmflag.Messages;
 import net.src_dev.wgtreefarmflag.WGTreeFarmFlag;
 
 public class BlockListener implements Listener{
@@ -78,7 +77,7 @@ public class BlockListener implements Listener{
 			}
 			else if(mat == Material.SAPLING){
 				if(p.hasPermission("wgtreefarmflag.saplingbreak") && plugin.getConfig().getBoolean("allow-saplingbreak-with-perm")) return;
-				ChatFunctions.sendColoredMessage(p, Strings.cannotBreakSapling);
+				Messages.cannotBreakSapling.send(p);
 			}
 			else return;
 			e.setCancelled(true);
@@ -123,7 +122,7 @@ public class BlockListener implements Listener{
 			}
 			else if(mat == Material.RED_MUSHROOM || mat == Material.BROWN_MUSHROOM){
 				if(p.hasPermission("wgtreefarmflag.mushroombreak") && plugin.getConfig().getBoolean("allow-mushroombreak-with-perm")) return;
-				ChatFunctions.sendColoredMessage(p, Strings.cannotBreakMushroom);
+				Messages.cannotBreakMushroom.send(p);
 			}
 			else return;
 			e.setCancelled(true);

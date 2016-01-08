@@ -6,20 +6,26 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Message {
 	private String text;
-	public Message(){
-		setText("");
-	}
+	private JavaPlugin plugin;
 	public Message(String text){
 		setText(text);
 	}
 	public Message(Message message){
+		setPlugin(message.getPlugin());
 		setText(message.toString());
 	}
-		
 	
+	public Message setPlugin(JavaPlugin plugin){
+		this.plugin = plugin;
+		return this;
+	}
+	private JavaPlugin getPlugin(){
+		return plugin;
+	}
 	
 	public Message setText(String text){
 		this.text = text;
@@ -42,11 +48,54 @@ public class Message {
 		}
 		return this;
 	}
-	public void send(CommandSender sender){
+	
+	
+	
+	public Message send(CommandSender sender){
 		sender.sendMessage(text);
+		return this;
 	}
-	public void send(Player player){
+	public Message send(Player player){
 		player.sendMessage(text);
+		return this;
+	}
+	public Message sendToConsole(){
+		plugin.getServer().getConsoleSender().sendMessage(text);
+		return this;
+	}
+	public Message logAsInfo(){
+		plugin.getLogger().info(text);
+		return this;
+	}
+	public Message logAsWarning(){
+		plugin.getLogger().warning(text);
+		return this;
+	}
+	
+	
+	
+	public Message append(String suffix){
+		text = text + suffix;
+		return this;
+	}
+	public Message append(Message suffix){
+		text = text + suffix.toString();
+		return this;
+	}
+	public Message prepend(String prefix){
+		text = prefix + text;
+		return this;
+	}
+	public Message prepend(Message prefix){
+		text = prefix.toString() + text;
+		return this;
+	}
+	public Message copy(){
+		return new Message(this);
+	}
+	public Message stripColor(){
+		text = ChatColor.stripColor(text);
+		return this;
 	}
 	
 		

@@ -1,6 +1,5 @@
 package net.src_dev.srclibrary.messageapi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,22 +7,26 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class MultiMessage {
 	private List<String> text;
-	public MultiMessage(){
-		List<String> text = new ArrayList<String>();
-		text.add("");
-		setText(text);
-	}
+	private JavaPlugin plugin;
 	public MultiMessage(List<String> text){
 		setText(text);
 	}
 	public MultiMessage(MultiMessage multiMessage){
+		setPlugin(multiMessage.getPlugin());
 		setText(multiMessage.toStringList());
 	}
 	
-	
+	public MultiMessage setPlugin(JavaPlugin plugin){
+		this.plugin = plugin;
+		return this;
+	}
+	private JavaPlugin getPlugin(){
+		return plugin;
+	}
 	
 	public MultiMessage setText(List<String> text){
 		this.text = text;
@@ -54,15 +57,75 @@ public class MultiMessage {
 		}
 		return this;
 	}
-	public void send(CommandSender sender){
+	
+	
+	
+	public MultiMessage send(CommandSender sender){
 		for(String t:text){
 			sender.sendMessage(t);
 		}
+		return this;
 	}
-	public void send(Player player){
+	public MultiMessage send(Player player){
 		for(String t:text){
 			player.sendMessage(t);
 		}
+		return this;
+	}
+	public MultiMessage sendToConsole(){
+		CommandSender console = plugin.getServer().getConsoleSender();
+		for(String t:text){
+			console.sendMessage(t);
+		}
+		return this;
+	}
+	public MultiMessage logAsInfo(){
+		for(String t:text){
+			plugin.getLogger().info(t);
+		}
+		return this;
+	}
+	public MultiMessage logAsWarning(){
+		for(String t:text){
+			plugin.getLogger().warning(t);
+		}
+		return this;
+	}
+	
+	
+	
+	public MultiMessage append(String suffix){
+		for(String t:text){
+			text.set(text.indexOf(t), t + suffix);
+		}
+		return this;
+	}
+	public MultiMessage append(Message suffix){
+		for(String t:text){
+			text.set(text.indexOf(t), t + suffix.toString());
+		}
+		return this;
+	}
+	public MultiMessage prepend(String prefix){
+		for(String t:text){
+			text.set(text.indexOf(t), prefix + t);
+		}
+		return this;
+	}
+	public MultiMessage prepend(Message prefix){
+		for(String t:text){
+			text.set(text.indexOf(t), prefix.toString() + t);
+		}
+		return this;
+	}
+	public MultiMessage copy(){
+		return new MultiMessage(this);
+	}
+	public MultiMessage stripColor(){
+		for(String t:text){
+			text.set(text.indexOf(t), ChatColor.stripColor(t));
+		}
+		return this;
 	}
 	
 	

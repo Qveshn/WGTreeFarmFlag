@@ -12,14 +12,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import net.src_dev.srclibrary.ChatFunctions;
-import net.src_dev.srclibrary.JavaPlugin;
 import net.src_dev.srclibrary.RegionFunctions;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
@@ -42,30 +41,31 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	@Override
 	public void onEnable(){	
 		saveDefaultConfig();
+		
+		new Messages(this);
+		
 		debug = getConfig().getBoolean("debug");
 		debugLevel = getConfig().getInt("debug-level");
 		if(debugLevel < 1 || debugLevel > 4){
-			logWarning(Strings.invalidDebugLevel);
+			Messages.invalidDebugLevel.logAsWarning();
 			debugLevel = defaultDebugLevel;
 		}
 		
 		worldGuard = getWorldGuardPlugin();
 		if(worldGuard == null){
-			logWarning(Strings.noWorldGuard);
+			Messages.noWorldGuard.logAsWarning();
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		wgCustomFlags = getWGCustomFlagsPlugin();
 		if(wgCustomFlags == null){
-			logWarning(Strings.noWGCustomFlags);
+			Messages.noWGCustomFlags.logAsWarning();
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		
 		wgCustomFlags.addCustomFlag(TREE_FARM);
 		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
-	
-		Strings.loadStrings(getConfig());
 		
-		logWarning(Strings.checkingAllRegions);
+		Messages.checkingAllRegions.logAsWarning();
 		treeFarms = new HashMap<World, ProtectedRegion>();
 		mushroomFarms = new HashMap<World, ProtectedRegion>();
 		for(World w:getServer().getWorlds()){
@@ -79,7 +79,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 				}
 			}
 		}
-		logWarning(Strings.doneCheckingRegions);
+		Messages.doneCheckingRegions.logAsWarning();
 		
 		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance");
 		int mushroomGrowthChance = getConfig().getInt("mushroom-growth-chance");
@@ -91,7 +91,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
-		logInfo(Strings.enableInfo);
+		Messages.enabled.logAsInfo();
 	}
 	@Override
 	public void onDisable(){
@@ -101,7 +101,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		HandlerList.unregisterAll(this);
 		
-		logInfo(Strings.disableInfo);
+		Messages.disabled.logAsInfo();
 	}
 	public void reload(){
 		onDisable();
@@ -111,37 +111,33 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		if(label.equalsIgnoreCase("wgtreefarmflag")){
 			if(args.length == 0){
-				for(String s:Strings.info){
-					ChatFunctions.sendColoredMessage(sender, s.replace("%version%", version));
-				}
+				Messages.info.send(sender);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("help")){
 				if(!sender.hasPermission("wgtreefarmflag.help")){
-					sender.sendMessage(Strings.noPermission);
+					Messages.noPermission.send(sender);
 					return true;
 				}
-				for(String s:Strings.help){
-					ChatFunctions.sendColoredMessage(sender, s);
-				}
+				Messages.help.send(sender);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("reload")){
 				if(!sender.hasPermission("wgtreefarmflag.reload")){
-					sender.sendMessage(Strings.noPermission);
+					Messages.noPermission.send(sender);
 					return true;
 				}
 				reload();
-				ChatFunctions.sendColoredMessage(sender, Strings.reloaded);
+				Messages.reloaded.send(sender);
 				return true;
 			}
-			ChatFunctions.sendColoredMessage(sender, Strings.commandNonExistant);
+			Messages.commandNonExistant.send(sender);
 			return true;
 		}
 		return false;
 	}
 	public void logDebug(String debugInfo, int level){
-		if(debug && level <= debugLevel) messageConsole(Strings.debugHeader + debugInfo, true);
+		if(debug && level <= debugLevel) Messages.debugHeader.copy().append(debugInfo).color().sendToConsole();
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){
