@@ -15,24 +15,18 @@ public class Message {
 		setText(text);
 	}
 	public Message(Message message){
-		setPlugin(message.getPlugin());
-		setText(message.toString());
+		setPlugin(message.plugin);
+		setText(message.text);
 	}
 	
 	public Message setPlugin(JavaPlugin plugin){
 		this.plugin = plugin;
 		return this;
 	}
-	private JavaPlugin getPlugin(){
-		return plugin;
-	}
 	
 	public Message setText(String text){
 		this.text = text;
 		return this;
-	}
-	public String getText(){
-		return text;
 	}
 	public Message color(){
 		text = ChatColor.translateAlternateColorCodes('&', text);

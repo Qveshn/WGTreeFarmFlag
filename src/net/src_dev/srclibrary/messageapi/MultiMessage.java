@@ -16,24 +16,18 @@ public class MultiMessage {
 		setText(text);
 	}
 	public MultiMessage(MultiMessage multiMessage){
-		setPlugin(multiMessage.getPlugin());
-		setText(multiMessage.toStringList());
+		setPlugin(multiMessage.plugin);
+		setText(multiMessage.text);
 	}
 	
 	public MultiMessage setPlugin(JavaPlugin plugin){
 		this.plugin = plugin;
 		return this;
 	}
-	private JavaPlugin getPlugin(){
-		return plugin;
-	}
 	
 	public MultiMessage setText(List<String> text){
 		this.text = text;
 		return this;
-	}
-	public List<String> getText(){
-		return text;
 	}
 	public MultiMessage color(){
 		for(String t:text){
@@ -150,6 +144,9 @@ public class MultiMessage {
 	}
 	public List<String> toStringList(){
 		return text;
+	}
+	public String[] toStringArray(){
+		return (String[]) text.toArray();
 	}
 	public MultiMessage trim(){
 		for(String t:text){

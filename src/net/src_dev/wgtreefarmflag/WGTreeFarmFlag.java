@@ -19,11 +19,11 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import net.src_dev.srclibrary.RegionFunctions;
+import net.src_dev.srclibrary.functions.RegionFunctions;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.1.33";
+	public final static String version = "1.2.0";
 	
 	private boolean debug;
 	private int debugLevel;
