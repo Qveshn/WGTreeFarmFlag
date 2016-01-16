@@ -1,22 +1,28 @@
 package net.src_dev.wgtreefarmflag;
 
-import net.src_dev.srclibrary.messageapi.Message;
-import net.src_dev.srclibrary.messageapi.MessageAPI;
-import net.src_dev.srclibrary.messageapi.MultiMessage;
+import net.srv_dev.wgtreefarmflag.library.Message;
+import net.srv_dev.wgtreefarmflag.library.MessageHandler;
+import net.srv_dev.wgtreefarmflag.library.MultiMessage;
 
-public class Messages extends MessageAPI {
+public class Messages extends MessageHandler {
 	public Messages(WGTreeFarmFlag plugin){
 		super(plugin, plugin.getConfig());
+		options().setKeyPrefix("strings.");
+		load();
 	}
 	
-	public static MultiMessage enabled;
-	public static Message disabled;
+	public static MultiMessage enabled = new MultiMessage(new String[]{
+			"Version " + WGTreeFarmFlag.version, 
+			"By S_Ryan", 
+			"Successfully enabled."
+			});
+	public static Message disabled = new Message("Disabled.");
 	
-	public static Message checkingAllRegions; 
-	public static Message doneCheckingRegions; 
-	public static Message invalidDebugLevel; 
-	public static Message noWorldGuard;
-	public static Message noWGCustomFlags;
+	public static Message checkingAllRegions = new Message("Gathering farm regions and information.."); 
+	public static Message doneCheckingRegions = new Message("Done checking regions."); 
+	public static Message invalidDebugLevel = new Message("Invalid debug level (must be 1-4). Using default.");
+	public static Message noWorldGuard = new Message("Could not find WorldGuard. Disabling.");
+	public static Message noWGCustomFlags = new Message("Could not find WGCustomFlags. Disabling.");
 	
 	public static MultiMessage info;
 	public static MultiMessage help;
@@ -28,22 +34,7 @@ public class Messages extends MessageAPI {
 	public static Message cannotBreakMushroom;
 	public static Message debugHeader;
 	
-	public void load(){
-		setKeyPrefix("strings.");
-		
-		enabled = createMultiMessage(new String[]{
-				"[WGTreeFarmFlag] Version " + WGTreeFarmFlag.version, 
-				"[WGTreeFarmFlag] By S_Ryan", 
-				"[WGTreeFarmFlag] Successfully enabled."
-				});
-		disabled = createMessage("[WGTreeFarmFlag] Disabled.");
-		
-		checkingAllRegions = createMessage("[WGTreeFarmFlag] Gathering farm regions and information..");
-		doneCheckingRegions = createMessage("[WGTreeFarmFlag] Done checking regions.");
-		invalidDebugLevel = createMessage("[WGTreeFarmFlag] Invalid debug level (must be 1-4). Using default.");
-		noWorldGuard = createMessage("[WGTreeFarmFlag] Could not find WorldGuard. Disabling.");
-		noWGCustomFlags = createMessage("[WGTreeFarmFlag] Could not find WGCustomFlags. Disabling.");
-		
+	public void load(){		
 		info = getConfigMultiMessage("info").color().replace("%version%", WGTreeFarmFlag.version);
 		help = getConfigMultiMessage("help").color();
 		

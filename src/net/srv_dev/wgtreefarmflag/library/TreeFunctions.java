@@ -1,4 +1,4 @@
-package net.src_dev.srclibrary.functions;
+package net.srv_dev.wgtreefarmflag.library;
 
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -7,7 +7,9 @@ import org.bukkit.block.Block;
 public class TreeFunctions {
 	@SuppressWarnings("deprecation")
 	public static TreeType getTreeTypeFromSapling(Block sapling){
-		if(sapling.getType() != Material.SAPLING) return null;
+		if(sapling.getType() != Material.SAPLING){
+			return null;
+		}
 		byte data = sapling.getData();
 		TreeType treeType;
 		switch(data){
@@ -23,7 +25,7 @@ public class TreeFunctions {
 					break;
 			case 5: treeType = TreeType.DARK_OAK;	
 					break;
-			default: treeType = null;
+			default: treeType = TreeType.TREE;
 					break;
 		}
 		return treeType;

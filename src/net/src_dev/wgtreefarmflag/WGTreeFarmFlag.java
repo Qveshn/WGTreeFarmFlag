@@ -19,11 +19,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import net.src_dev.srclibrary.functions.RegionFunctions;
 import net.src_dev.wgtreefarmflag.listeners.BlockListener;
+import net.srv_dev.wgtreefarmflag.library.RegionFunctions;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.2.0";
+	public final static String version = "1.2.10";
+	
+	public Messages messages;
 	
 	private boolean debug;
 	private int debugLevel;
@@ -40,32 +42,33 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	
 	@Override
 	public void onEnable(){	
+		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
 		
-		new Messages(this);
+		messages = new Messages(this);
 		
 		debug = getConfig().getBoolean("debug");
 		debugLevel = getConfig().getInt("debug-level");
 		if(debugLevel < 1 || debugLevel > 4){
-			Messages.invalidDebugLevel.logAsWarning();
+			messages.logAsWarning(Messages.invalidDebugLevel);
 			debugLevel = defaultDebugLevel;
 		}
 		
 		worldGuard = getWorldGuardPlugin();
 		if(worldGuard == null){
-			Messages.noWorldGuard.logAsWarning();
+			messages.logAsWarning(Messages.noWorldGuard);
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		wgCustomFlags = getWGCustomFlagsPlugin();
 		if(wgCustomFlags == null){
-			Messages.noWGCustomFlags.logAsWarning();
+			messages.logAsWarning(Messages.noWGCustomFlags);
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		
 		wgCustomFlags.addCustomFlag(TREE_FARM);
 		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
 		
-		Messages.checkingAllRegions.logAsWarning();
+		messages.logAsWarning(Messages.checkingAllRegions);
 		treeFarms = new HashMap<World, ProtectedRegion>();
 		mushroomFarms = new HashMap<World, ProtectedRegion>();
 		for(World w:getServer().getWorlds()){
@@ -79,7 +82,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 				}
 			}
 		}
-		Messages.doneCheckingRegions.logAsWarning();
+		messages.logAsWarning(Messages.doneCheckingRegions);
 		
 		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance");
 		int mushroomGrowthChance = getConfig().getInt("mushroom-growth-chance");
@@ -91,7 +94,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
-		Messages.enabled.logAsInfo();
+		messages.logAsWarning(Messages.enabled);
 	}
 	@Override
 	public void onDisable(){
@@ -101,7 +104,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		HandlerList.unregisterAll(this);
 		
-		Messages.disabled.logAsInfo();
+		messages.logAsWarning(Messages.disabled);
 	}
 	public void reload(){
 		onDisable();
@@ -137,7 +140,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		return false;
 	}
 	public void logDebug(String debugInfo, int level){
-		if(debug && level <= debugLevel) Messages.debugHeader.copy().append(debugInfo).color().sendToConsole();
+		if(debug && level <= debugLevel) messages.sendToConsole(Messages.debugHeader.copy().append(debugInfo).color());
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){

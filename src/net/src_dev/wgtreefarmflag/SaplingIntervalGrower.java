@@ -12,7 +12,7 @@ import org.bukkit.block.Block;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import net.src_dev.srclibrary.functions.TreeFunctions;
+import net.srv_dev.wgtreefarmflag.library.TreeFunctions;
 
 public class SaplingIntervalGrower implements Runnable{
 	private WGTreeFarmFlag plugin;
