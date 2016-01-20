@@ -8,6 +8,7 @@ package net.srv_dev.wgtreefarmflag.library;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,22 +19,22 @@ import org.bukkit.entity.Player;
  */
 public class Message {
 	
-	private String text;
+	protected String text;
 	
 	/**
 	 * Creates a new Message with a starting text.
 	 * @param text Starting text. Used to initialize and fill the text variable.
 	 */
 	public Message(String text) {
-		setText(text);
+		this.text = text;
 	}
 	
 	/**
 	 * Creates a new Message from an existing Message. Essentially creates a copy.
 	 * @param message The old message which is to be copied.
 	 */
-	public Message(Message oldMessage) {
-		setText(oldMessage.text);
+	protected Message(Message oldMessage) {
+		this.text = oldMessage.text;
 	}
 	
 	/**
@@ -94,6 +95,42 @@ public class Message {
 	 */
 	public Message send(Player player) {
 		player.sendMessage(text);
+		return this;
+	}
+	
+	/**
+	 * Sends the message to the ConsoleSender.
+	 * @return Returns the Message instance (for in-line use).
+	 */
+	public Message sendToConsole() {
+		Bukkit.getServer().getConsoleSender().sendMessage(text);
+		return this;
+	}
+	
+	/**
+	 * Logs the message as info using the statically referenced logger.
+	 * @return Returns the Message instance (for in-line use).
+	 */
+	public Message logAsInfo() {
+		Bukkit.getServer().getLogger().info(text);
+		return this;
+	}
+	
+	/**
+	 * Logs the message as warning using the statically referenced logger.
+	 * @return Returns the Message instance (for in-line use).
+	 */
+	public Message logAsWarning() {
+		Bukkit.getServer().getLogger().warning(text);
+		return this;
+	}
+	
+	/**
+	 * Logs the message as severe using the statically referenced logger.
+	 * @return Returns the Message instance (for in-line use).
+	 */
+	public Message logAsSevere() {
+		Bukkit.getServer().getLogger().severe(text);
 		return this;
 	}
 	
@@ -203,4 +240,5 @@ public class Message {
 		text = text.trim();
 		return this;
 	}
+	
 }

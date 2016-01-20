@@ -50,25 +50,25 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		debug = getConfig().getBoolean("debug");
 		debugLevel = getConfig().getInt("debug-level");
 		if(debugLevel < 1 || debugLevel > 4){
-			messages.logAsWarning(Messages.invalidDebugLevel);
+			Messages.invalidDebugLevel.logAsWarning();
 			debugLevel = defaultDebugLevel;
 		}
 		
 		worldGuard = getWorldGuardPlugin();
 		if(worldGuard == null){
-			messages.logAsWarning(Messages.noWorldGuard);
+			Messages.noWorldGuard.logAsSevere();
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		wgCustomFlags = getWGCustomFlagsPlugin();
 		if(wgCustomFlags == null){
-			messages.logAsWarning(Messages.noWGCustomFlags);
+			Messages.noWGCustomFlags.logAsSevere();
 			getServer().getPluginManager().disablePlugin(this);
 		}
 		
 		wgCustomFlags.addCustomFlag(TREE_FARM);
 		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
 		
-		messages.logAsWarning(Messages.checkingAllRegions);
+		Messages.checkingAllRegions.logAsWarning();
 		treeFarms = new HashMap<World, ProtectedRegion>();
 		mushroomFarms = new HashMap<World, ProtectedRegion>();
 		for(World w:getServer().getWorlds()){
@@ -82,7 +82,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 				}
 			}
 		}
-		messages.logAsWarning(Messages.doneCheckingRegions);
+		Messages.doneCheckingRegions.logAsWarning();
 		
 		int saplingGrowthChance = getConfig().getInt("sapling-growth-chance");
 		int mushroomGrowthChance = getConfig().getInt("mushroom-growth-chance");
@@ -94,7 +94,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		getServer().getPluginManager().registerEvents(new BlockListener(this), this);
 		
-		messages.logAsWarning(Messages.enabled);
+		Messages.enabled.logAsWarning();
 	}
 	@Override
 	public void onDisable(){
@@ -104,7 +104,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		
 		HandlerList.unregisterAll(this);
 		
-		messages.logAsWarning(Messages.disabled);
+		Messages.disabled.logAsWarning();
 	}
 	public void reload(){
 		onDisable();
@@ -140,7 +140,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		return false;
 	}
 	public void logDebug(String debugInfo, int level){
-		if(debug && level <= debugLevel) messages.sendToConsole(Messages.debugHeader.copy().append(debugInfo).color());
+		if(debug && level <= debugLevel) Messages.debugHeader.copy().append(debugInfo).color().sendToConsole();
 	}
 	
 	public WorldGuardPlugin getWorldGuard(){

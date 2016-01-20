@@ -6,7 +6,7 @@ import net.srv_dev.wgtreefarmflag.library.MultiMessage;
 
 public class Messages extends MessageHandler {
 	public Messages(WGTreeFarmFlag plugin){
-		super(plugin, plugin.getConfig());
+		super(plugin.getConfig());
 		options().setKeyPrefix("strings.");
 		load();
 	}
@@ -34,7 +34,7 @@ public class Messages extends MessageHandler {
 	public static Message cannotBreakMushroom;
 	public static Message debugHeader;
 	
-	public void load(){		
+	public void load(){
 		info = getConfigMultiMessage("info").color().replace("%version%", WGTreeFarmFlag.version);
 		help = getConfigMultiMessage("help").color();
 		

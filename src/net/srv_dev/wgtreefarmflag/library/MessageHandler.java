@@ -6,18 +6,15 @@
 package net.srv_dev.wgtreefarmflag.library;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * The MessageHandler object class.
  * Class is abstract. Must be subclassed.
  * A subclass of this is used to create and control Messages and MultiMessages.
  */
-public abstract class MessageHandler {
+public class MessageHandler {
 
-	private JavaPlugin plugin;
 	private FileConfiguration config;
-	
 	
 	private Options options = new Options();
 	
@@ -26,86 +23,8 @@ public abstract class MessageHandler {
 	 * @param plugin Should be an instance of JavaPlugin.
 	 * @param config Can be any FileConfiguration instance. Used to get messages from config.
 	 */
-	public MessageHandler(JavaPlugin plugin, FileConfiguration config) {
-		this.plugin = plugin;
+	public MessageHandler(FileConfiguration config) {
 		this.config = config;		
-	}
-	
-	/**
-	 * Loads all of the messages. Should only be called by child classes.
-	 */
-	public abstract void load();
-	
-	/**
-	 * Sends a Message to the console.
-	 * @param message The Message to send.
-	 */
-	public void sendToConsole(Message message){
-		plugin.getServer().getConsoleSender().sendMessage(message.toString());
-	}
-	
-	/**
-	 * Sends a MultiMessage to the console.
-	 * @param message The MultiMessage to send.
-	 */
-	public void sendToConsole(MultiMessage message){
-		for(String s : message.toStringList()){
-			plugin.getServer().getConsoleSender().sendMessage(s);
-		}
-	}
-	
-	/**
-	 * Logs a Message as info.
-	 * @param message The Message to log.
-	 */
-	public void logAsInfo(Message message){
-		plugin.getServer().getLogger().info(message.toString());
-	}
-	
-	/**
-	 * Logs a MultiMessage as info.
-	 * @param message The MultiMessage to log.
-	 */
-	public void logAsInfo(MultiMessage message){
-		for(String s : message.toStringList()){
-			plugin.getServer().getLogger().info(s);
-		}
-	}
-	
-	/**
-	 * Logs a Message as warning.
-	 * @param message The Message to log.
-	 */
-	public void logAsWarning(Message message){
-		plugin.getServer().getLogger().warning(message.toString());
-	}
-	
-	/**
-	 * Logs a MultiMessage as warning.
-	 * @param message The MultiMessage to log.
-	 */
-	public void logAsWarning(MultiMessage message){
-		for(String s : message.toStringList()){
-			plugin.getServer().getLogger().warning(s);
-		}
-	}
-	
-	/**
-	 * Logs a Message as severe.
-	 * @param message The Message to log.
-	 */
-	public void logAsSevere(Message message){
-		plugin.getServer().getLogger().severe(message.toString());
-	}
-	
-	/**
-	 * Logs a MultiMessage as severe.
-	 * @param message The MultiMessage to log.
-	 */
-	public void logAsSevere(MultiMessage message){
-		for(String s : message.toStringList()){
-			plugin.getServer().getLogger().severe(s);
-		}
 	}
 	
 	/**
@@ -175,7 +94,7 @@ public abstract class MessageHandler {
 		 * Gets the keyPrefix. 
 		 * @return Returns the keyPrefix.
 		 */
-		public String getKeyPrefix() {
+		private String getKeyPrefix() {
 			return keyPrefix;
 		}
 		

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,14 +21,14 @@ import org.bukkit.entity.Player;
  */
 public class MultiMessage {
 	
-	private List<String> text;
+	protected List<String> text;
 	
 	/**
 	 * Creates a new MultiMessage with a starting list.
 	 * @param text Starting list. Used to initialize and fill the text variable.
 	 */
 	public MultiMessage(List<String> text) {
-		setText(text);
+		this.text = text;
 	}
 	
 	/**
@@ -35,15 +36,15 @@ public class MultiMessage {
 	 * @param text Starting array. Converted to List to fill the text variable.
 	 */
 	public MultiMessage(String[] text){
-		setText(text);
+		this.text = Arrays.asList(text);
 	}
 	
 	/**
 	 * Creates a new MultiMessage from an existing MultiMessage. Essentially creates a copy.
 	 * @param multiMessage The old multimessage which is to be copied.
 	 */
-	private MultiMessage(MultiMessage oldMessage) {
-		setText(oldMessage.text);
+	protected MultiMessage(MultiMessage oldMessage) {
+		this.text = oldMessage.text;
 	}
 	
 	/**
@@ -125,6 +126,50 @@ public class MultiMessage {
 	public MultiMessage send(Player player) {
 		for(String t : text) {
 			player.sendMessage(t);
+		}
+		return this;
+	}
+	
+	/**
+	 * Sends the multimessage to the ConsoleSender.
+	 * @return Returns the MultiMessage instance (for in-line use).
+	 */
+	public MultiMessage sendToConsole() {
+		for(String t : text) {
+			Bukkit.getServer().getConsoleSender().sendMessage(t);
+		}
+		return this;
+	}
+	
+	/**
+	 * Logs the multimessage as info using the statically referenced logger.
+	 * @return Returns the MultiMessage instance (for in-line use).
+	 */
+	public MultiMessage logAsInfo() {
+		for(String t : text) {
+			Bukkit.getServer().getLogger().info(t);
+		}
+		return this;
+	}
+	
+	/**
+	 * Logs the multimessage as warning using the statically referenced logger.
+	 * @return Returns the MultiMessage instance (for in-line use).
+	 */
+	public MultiMessage logAsWarning() {
+		for(String t : text) {
+			Bukkit.getServer().getLogger().warning(t);
+		}
+		return this;
+	}
+	
+	/**
+	 * Logs the multimessage as severe using the statically referenced logger.
+	 * @return Returns the MultiMessage instance (for in-line use).
+	 */
+	public MultiMessage logAsSevere() {
+		for(String t : text) {
+			Bukkit.getServer().getLogger().severe(t);
 		}
 		return this;
 	}
@@ -261,4 +306,5 @@ public class MultiMessage {
 		}
 		return this;
 	}
+	
 }
