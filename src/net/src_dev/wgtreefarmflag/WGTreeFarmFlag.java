@@ -23,7 +23,7 @@ import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 import net.srv_dev.wgtreefarmflag.library.RegionFunctions;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.2.12";
+	public final static String version = "1.2.13";
 	
 	public Messages messages;
 	

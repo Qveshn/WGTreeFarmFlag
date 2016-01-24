@@ -1,8 +1,8 @@
 package net.src_dev.wgtreefarmflag;
 
-import net.srv_dev.wgtreefarmflag.library.Message;
-import net.srv_dev.wgtreefarmflag.library.MessageHandler;
-import net.srv_dev.wgtreefarmflag.library.MultiMessage;
+import net.src_dev.wgtreefarmflag.library.messageapi.Message;
+import net.src_dev.wgtreefarmflag.library.messageapi.MessageHandler;
+import net.src_dev.wgtreefarmflag.library.messageapi.MultiMessage;
 
 public class Messages extends MessageHandler {
 	public Messages(WGTreeFarmFlag plugin){

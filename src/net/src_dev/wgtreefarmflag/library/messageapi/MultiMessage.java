@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package net.srv_dev.wgtreefarmflag.library;
+package net.src_dev.wgtreefarmflag.library.messageapi;
 
 import java.util.Arrays;
 import java.util.List;
