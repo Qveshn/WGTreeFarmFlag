@@ -1,3 +1,4 @@
+require-perms: false
 allow-shears: true
 allow-saplingbreak-with-perm: false
 allow-mushroombreak-with-perm: false

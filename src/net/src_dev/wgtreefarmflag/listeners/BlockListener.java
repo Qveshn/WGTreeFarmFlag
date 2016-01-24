@@ -40,6 +40,9 @@ public class BlockListener implements Listener{
 		Block blUnder;
 		ApplicableRegionSet regionSet = plugin.getWorldGuard().getRegionManager(w).getApplicableRegions(loc);
 		if(regionSet.testState(null, WGTreeFarmFlag.TREE_FARM)){
+			if(!p.hasPermission("wgtreefarmflag.use.treefarm") && plugin.getConfig().getBoolean("require-perms")) {
+				return;
+			}
 			itemInHand = p.getItemInHand();
 			if(mat == Material.LOG || mat == Material.LOG_2){
 				data = bl.getData();
@@ -84,6 +87,9 @@ public class BlockListener implements Listener{
 			return;
 		}
 		if(regionSet.testState(null, WGTreeFarmFlag.MUSHROOM_FARM)){
+			if(!p.hasPermission("wgtreefarmflag.use.mushroomfarm") && plugin.getConfig().getBoolean("require-perms")) {
+				return;
+			}
 			itemInHand = p.getItemInHand();
 			boolean isMushroom = false;
 			Material mushroomType = null;

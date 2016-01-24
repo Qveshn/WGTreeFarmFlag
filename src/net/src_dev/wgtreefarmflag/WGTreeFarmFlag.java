@@ -23,10 +23,8 @@ import net.src_dev.wgtreefarmflag.listeners.BlockListener;
 import net.srv_dev.wgtreefarmflag.library.RegionFunctions;
 
 public final class WGTreeFarmFlag extends JavaPlugin{
-	public final static String version = "1.2.13";
-	
-	public Messages messages;
-	
+	public final static String version = "1.2.15";
+		
 	private boolean debug;
 	private int debugLevel;
 	private int defaultDebugLevel = 2;
@@ -45,7 +43,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 		getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
 		
-		messages = new Messages(this);
+		new Messages(this);
 		
 		debug = getConfig().getBoolean("debug");
 		debugLevel = getConfig().getInt("debug-level");
