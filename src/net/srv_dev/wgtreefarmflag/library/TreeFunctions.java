@@ -7,9 +7,7 @@ import org.bukkit.block.Block;
 public class TreeFunctions {
 	@SuppressWarnings("deprecation")
 	public static TreeType getTreeTypeFromSapling(Block sapling){
-		if(sapling.getType() != Material.SAPLING){
-			return null;
-		}
+		if(sapling.getType() != Material.SAPLING) throw new IllegalArgumentException("The Block must be of the type Material.SAPLING.");
 		byte data = sapling.getData();
 		TreeType treeType;
 		switch(data){
@@ -25,7 +23,7 @@ public class TreeFunctions {
 					break;
 			case 5: treeType = TreeType.DARK_OAK;	
 					break;
-			default: treeType = TreeType.TREE;
+			default: treeType = null;
 					break;
 		}
 		return treeType;
