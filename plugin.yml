@@ -3,7 +3,7 @@ version: S_Ryan
 main: net.src_dev.wgtreefarmflag.WGTreeFarmFlag
 description: Adds a custom tree-farm flag to WorldGuard.
 author: S_Ryan
-depend: [WorldGuard,WGCustomFlags]
+depend: [WorldGuard]
 commands:
   wgtreefarmflag:
     description: Base command for all WGTreeFarmFlag commands.

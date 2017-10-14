@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -14,7 +15,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
+//import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -30,13 +31,19 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	private int defaultDebugLevel = 2;
 	
 	private WorldGuardPlugin worldGuard;
-	private WGCustomFlagsPlugin wgCustomFlags;
+	//private WGCustomFlagsPlugin wgCustomFlags;
 	
 	public static final StateFlag TREE_FARM = new StateFlag("tree-farm", false);
 	public static final StateFlag MUSHROOM_FARM = new StateFlag("mushroom-farm", false);
 	
 	public HashMap<World, ProtectedRegion> treeFarms; 
 	public HashMap<World, ProtectedRegion> mushroomFarms;
+
+	public WGTreeFarmFlag(){
+		FlagRegistry flagRegistry = WorldGuardPlugin.inst().getFlagRegistry();
+		flagRegistry.register(TREE_FARM);
+		flagRegistry.register(MUSHROOM_FARM);
+	}
 	
 	@Override
 	public void onEnable(){	
@@ -57,14 +64,14 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 			Messages.noWorldGuard.logAsSevere();
 			getServer().getPluginManager().disablePlugin(this);
 		}
-		wgCustomFlags = getWGCustomFlagsPlugin();
-		if(wgCustomFlags == null){
-			Messages.noWGCustomFlags.logAsSevere();
-			getServer().getPluginManager().disablePlugin(this);
-		}
+//		wgCustomFlags = getWGCustomFlagsPlugin();
+//		if(wgCustomFlags == null){
+//			Messages.noWGCustomFlags.logAsSevere();
+//			getServer().getPluginManager().disablePlugin(this);
+//		}
 		
-		wgCustomFlags.addCustomFlag(TREE_FARM);
-		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
+//		wgCustomFlags.addCustomFlag(TREE_FARM);
+//		wgCustomFlags.addCustomFlag(MUSHROOM_FARM);
 		
 		Messages.checkingAllRegions.logAsWarning();
 		treeFarms = new HashMap<World, ProtectedRegion>();
@@ -144,9 +151,9 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public WorldGuardPlugin getWorldGuard(){
 		return worldGuard;
 	}
-	public WGCustomFlagsPlugin getWGCustomFlags(){
-		return wgCustomFlags;
-	}
+//	public WGCustomFlagsPlugin getWGCustomFlags(){
+//		return wgCustomFlags;
+//	}
 	
 	private WorldGuardPlugin getWorldGuardPlugin() {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
@@ -155,13 +162,13 @@ public final class WGTreeFarmFlag extends JavaPlugin{
         }
         return (WorldGuardPlugin) plugin;
     }
-	private WGCustomFlagsPlugin getWGCustomFlagsPlugin(){
-		Plugin plugin = getServer().getPluginManager().getPlugin("WGCustomFlags");
-		if(plugin == null || !(plugin instanceof WGCustomFlagsPlugin)){
-			return null;
-		}
-		return (WGCustomFlagsPlugin) plugin;
-	}
+//	private WGCustomFlagsPlugin getWGCustomFlagsPlugin(){
+//		Plugin plugin = getServer().getPluginManager().getPlugin("WGCustomFlags");
+//		if(plugin == null || !(plugin instanceof WGCustomFlagsPlugin)){
+//			return null;
+//		}
+//		return (WGCustomFlagsPlugin) plugin;
+//	}
 	public HashMap<ProtectedRegion, List<Block>> getFarmSaplings(){
 		HashMap<ProtectedRegion, List<Block>> farmSaplings = new HashMap<ProtectedRegion, List<Block>>();
 		for(Entry<World, ProtectedRegion> entry:treeFarms.entrySet()){
