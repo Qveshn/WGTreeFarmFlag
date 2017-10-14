@@ -39,7 +39,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public HashMap<World, ProtectedRegion> treeFarms; 
 	public HashMap<World, ProtectedRegion> mushroomFarms;
 
-	public WGTreeFarmFlag() {
+	public WGTreeFarmFlag(){
 		FlagRegistry flagRegistry = WorldGuardPlugin.inst().getFlagRegistry();
 		flagRegistry.register(TREE_FARM);
 		flagRegistry.register(MUSHROOM_FARM);
