@@ -151,6 +151,7 @@ public final class WGTreeFarmFlag extends JavaPlugin{
 	public WorldGuardPlugin getWorldGuard(){
 		return worldGuard;
 	}
+	
 //	public WGCustomFlagsPlugin getWGCustomFlags(){
 //		return wgCustomFlags;
 //	}
